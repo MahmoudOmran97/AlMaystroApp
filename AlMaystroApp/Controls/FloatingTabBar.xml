@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AlMaystroApp.Controls.FloatingTabBar">
+	<Grid>
+
+		<Frame Margin="20,0,20,24"
+               VerticalOptions="End"
+               BackgroundColor="#1A1A1A"
+               BorderColor="#2A2A2A"
+               CornerRadius="32"
+               Padding="8,10"
+               HasShadow="True">
+			<Frame.Shadow>
+				<Shadow Brush="#000000" Offset="0,8" Radius="24" Opacity="0.5"/>
+			</Frame.Shadow>
+
+			<Grid ColumnDefinitions="*,*,68,*,*" ColumnSpacing="0">
+
+				<!-- الفواتير -->
+				<VerticalStackLayout Grid.Column="0" Spacing="3"
+                                     HorizontalOptions="Center" VerticalOptions="Center">
+					<Frame x:Name="frmInvoice" BackgroundColor="Transparent"
+                           CornerRadius="16" Padding="10,7" BorderColor="Transparent"
+                           HorizontalOptions="Center">
+						<Frame.GestureRecognizers>
+							<TapGestureRecognizer Tapped="OnInvoiceTapped"/>
+						</Frame.GestureRecognizers>
+						<Image Source="tab_invoice.png" HeightRequest="22" WidthRequest="22"/>
+					</Frame>
+					<Label x:Name="lblInvoice" Text="الفواتير" FontSize="11"
+                           TextColor="#606060" FontFamily="Cairo" HorizontalOptions="Center"/>
+				</VerticalStackLayout>
+
+				<!-- الحضور -->
+				<VerticalStackLayout Grid.Column="1" Spacing="3"
+                                     HorizontalOptions="Center" VerticalOptions="Center">
+					<Frame x:Name="frmAttend" BackgroundColor="Transparent"
+                           CornerRadius="16" Padding="10,7" BorderColor="Transparent"
+                           HorizontalOptions="Center">
+						<Frame.GestureRecognizers>
+							<TapGestureRecognizer Tapped="OnAttendTapped"/>
+						</Frame.GestureRecognizers>
+						<Image Source="tab_attend.png" HeightRequest="22" WidthRequest="22"/>
+					</Frame>
+					<Label x:Name="lblAttend" Text="الحضور" FontSize="11"
+                           TextColor="#606060" FontFamily="Cairo" HorizontalOptions="Center"/>
+				</VerticalStackLayout>
+
+				<!-- المنتصف فاضي -->
+				<!-- المنتصف فاضي -->
+				<BoxView Grid.Column="2" Color="Transparent" InputTransparent="True"/>
+
+				<!-- الحجوزات -->
+				<VerticalStackLayout Grid.Column="3" Spacing="3"
+                                     HorizontalOptions="Center" VerticalOptions="Center">
+					<Frame x:Name="frmBooking" BackgroundColor="Transparent"
+                           CornerRadius="16" Padding="10,7" BorderColor="Transparent"
+                           HorizontalOptions="Center">
+						<Frame.GestureRecognizers>
+							<TapGestureRecognizer Tapped="OnBookingTapped"/>
+						</Frame.GestureRecognizers>
+						<Image Source="tab_booking.png" HeightRequest="22" WidthRequest="22"/>
+					</Frame>
+					<Label x:Name="lblBooking" Text="الحجوزات" FontSize="11"
+                           TextColor="#606060" FontFamily="Cairo" HorizontalOptions="Center"/>
+				</VerticalStackLayout>
+
+				<!-- إشعارات -->
+				<VerticalStackLayout Grid.Column="4" Spacing="3"
+                                     HorizontalOptions="Center" VerticalOptions="Center">
+					<Frame x:Name="frmNotif" BackgroundColor="Transparent"
+                           CornerRadius="16" Padding="10,7" BorderColor="Transparent"
+                           HorizontalOptions="Center">
+						<Frame.GestureRecognizers>
+							<TapGestureRecognizer Tapped="OnNotifTapped"/>
+						</Frame.GestureRecognizers>
+						<Image Source="tab_notif.png" HeightRequest="22" WidthRequest="22"/>
+					</Frame>
+					<Label x:Name="lblNotif" Text="إشعارات" FontSize="11"
+                           TextColor="#606060" FontFamily="Cairo" HorizontalOptions="Center"/>
+				</VerticalStackLayout>
+
+			</Grid>
+		</Frame>
+
+		<!-- زر الرئيسية البارز -->
+		<!-- زر الرئيسية البارز -->
+		<VerticalStackLayout HorizontalOptions="Center" VerticalOptions="End"
+							 Margin="0,0,0,28" Spacing="4">
+			<!-- أضف الـ GestureRecognizer هنا على الـ VerticalStackLayout نفسه -->
+			<VerticalStackLayout.GestureRecognizers>
+				<TapGestureRecognizer Tapped="OnHomeTapped"/>
+			</VerticalStackLayout.GestureRecognizers>
+
+			<Frame x:Name="frmHome"
+				   BackgroundColor="#CC2200"
+				   BorderColor="#FF4422"
+				   CornerRadius="30"
+				   WidthRequest="60"
+				   HeightRequest="60"
+				   Padding="0"
+				   HorizontalOptions="Center"
+				   HasShadow="True"
+				   InputTransparent="True">
+				<!-- ← مهم: خلي الـ Frame يعدي الـ touch للأب -->
+				<Frame.Shadow>
+					<Shadow Brush="#CC2200" Offset="0,4" Radius="16" Opacity="0.6"/>
+				</Frame.Shadow>
+				<Image Source="tab_home.png"
+					   HeightRequest="26" WidthRequest="26"
+					   HorizontalOptions="Center" VerticalOptions="Center"
+					   InputTransparent="True"/>
+			</Frame>
+			<Label x:Name="lblHome" Text="الرئيسية" FontSize="11"
+				   TextColor="#CC2200" FontFamily="Cairo"
+				   HorizontalOptions="Center"
+				   InputTransparent="True"/>
+		</VerticalStackLayout>
+
+	</Grid>
+</ContentView>

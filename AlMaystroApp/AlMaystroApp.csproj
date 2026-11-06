@@ -1,0 +1,121 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
+		
+		<OutputType>Exe</OutputType>
+		<RootNamespace>AlMaystroApp</RootNamespace>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<PublishReadyToRun>false</PublishReadyToRun>
+		<!-- Display name -->
+		<ApplicationTitle>AlMaystroApp</ApplicationTitle>
+		<AndroidPackageFormat>apk</AndroidPackageFormat>
+		<!-- App Identifier -->
+		<ApplicationId>com.companyname.almaystroapp</ApplicationId>
+
+		<!-- Versions -->
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
+
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.1</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
+	  <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- App Icon -->
+		
+		<MauiIcon Include="Resources\AppIcon\appicon2.png" BaseSize="512,512">
+		  <CopyToOutputDirectory></CopyToOutputDirectory>
+		</MauiIcon>
+		
+		
+		 
+		
+
+		<!-- Splash Screen - خلفية بيضة -->
+		<MauiSplashScreen Include="Resources\Splash\splash.png" Color="#333333" />
+		<MauiImage Include="Resources\Splash\splash.png" />
+		<MauiImage Include="Resources\Splash\whatsapp.png" />
+		<!-- Images -->
+		<MauiImage Include="Resources\Images\*" />
+		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
+
+		<!-- Custom Fonts -->
+		<MauiFont Include="Resources\Fonts\*" />
+
+		<!-- Raw Assets -->
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiImage Remove="Resources\Images\whatsapp.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="Controls\FloatingTabBar.xml" />
+		<None Remove="Pages\AppointmentsPage.xml" />
+		<None Remove="Pages\AttendancePage.xml" />
+		<None Remove="Pages\BookingsPage.xml" />
+		<None Remove="Pages\DashboardPage.xml" />
+		<None Remove="Pages\NotificationsPage.xml" />
+		<None Remove="Resources\AppIcon\appicon2.png" />
+		<None Remove="Resources\AppIcon\app_logo.svg" />
+		<None Remove="Resources\Splash\splash.png" />
+		<None Remove="Resources\Splash\whatsapp.png" />
+		<None Remove="SplashPage.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<MauiXaml Include="Controls\FloatingTabBar.xml">
+		  <CopyToOutputDirectory></CopyToOutputDirectory>
+		</MauiXaml>
+		<MauiXaml Include="Pages\AppointmentsPage.xml">
+			<CopyToOutputDirectory></CopyToOutputDirectory>
+		</MauiXaml>
+		<MauiXaml Include="Pages\AttendancePage.xml">
+			<CopyToOutputDirectory></CopyToOutputDirectory>
+		</MauiXaml>
+		<MauiXaml Include="Pages\BookingsPage.xml">
+			<CopyToOutputDirectory></CopyToOutputDirectory>
+		</MauiXaml>
+		<MauiXaml Include="Pages\DashboardPage.xml">
+			<CopyToOutputDirectory></CopyToOutputDirectory>
+		</MauiXaml>
+		<MauiXaml Include="Pages\NotificationsPage.xml">
+		  <CopyToOutputDirectory></CopyToOutputDirectory>
+		</MauiXaml>
+		<MauiXaml Include="SplashPage.xml">
+		  <CopyToOutputDirectory></CopyToOutputDirectory>
+		</MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+		
+		<PackageReference Include="Plugin.LocalNotification" Version="11.1.2" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-android'">
+	  <PackageReference Include="Xamarin.Firebase.Messaging">
+	    <Version>123.4.1</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.GooglePlayServices.Base">
+	    <Version>118.4.0</Version>
+	  </PackageReference>
+	</ItemGroup>
+
+</Project>

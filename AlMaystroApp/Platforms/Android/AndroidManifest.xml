@@ -1,0 +1,40 @@
+﻿<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+	<application
+        android:allowBackup="true"
+        android:icon="@mipmap/appicon2"
+        android:roundIcon="@mipmap/appicon2_round"
+        android:supportsRtl="true">
+
+		<!-- التعديل هنا: تأكد من كتابة الـ Namespace بالظبط كما هو في ملف الـ C# -->
+		<service
+            android:name="AlMaystroApp.Platforms.Android.NotificationForegroundService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false"/>
+
+		<service
+             android:name="AlMaystroApp.Platforms.Android.MyFirebaseMessagingService"
+             android:exported="false">
+			<intent-filter>
+				<action android:name="com.google.firebase.MESSAGING_EVENT"/>
+			</intent-filter>
+		</service>
+
+		<!-- أيكون الإشعار -->
+		<!-- أيكون الإشعار الافتراضية -->
+		<meta-data
+			android:name="com.google.firebase.messaging.default_notification_icon"
+			android:resource="@mipmap/appicon2" />
+
+		<!-- معرف القناة الافتراضية - لاحظ استخدمنا android:value هنا لتجنب الخطأ -->
+		<meta-data
+			android:name="com.google.firebase.messaging.default_notification_channel_id"
+			android:value="maystro_channel" />
+	</application>
+
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+	<uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+	<uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
+</manifest>

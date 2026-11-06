@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AlMaystroApp.SplashPage"
+             NavigationPage.HasNavigationBar="False"
+            BackgroundColor="#333333">
+
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<!-- Logo Fade+Scale Animation -->
+			<Animation x:Key="LogoEntrance" />
+		</ResourceDictionary>
+	</ContentPage.Resources>
+
+	<Grid>
+		<!-- Background gradient overlay -->
+		<BoxView Color="#333333" />
+
+		<StackLayout
+            x:Name="MainStack"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Spacing="0"
+            Padding="40,0">
+
+			<!-- Logo Image -->
+			<Image
+                x:Name="LogoImage"
+                Source="splash.png"
+                HeightRequest="220"
+                WidthRequest="220"
+                Aspect="AspectFit"
+                HorizontalOptions="Center"
+                Opacity="0"
+                Scale="0.6" />
+
+			<!-- Spacer -->
+			<BoxView HeightRequest="30" Color="Transparent" />
+
+			<!-- Phone number stack - slides in from bottom -->
+			<StackLayout
+                x:Name="ContactStack"
+                Opacity="0"
+                TranslationY="60"
+                Spacing="12"
+                HorizontalOptions="Center">
+
+				<!-- Phone Row -->
+				<StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="10">
+					<Label
+                        Text="📞"
+                        FontSize="22"
+                        VerticalOptions="Center" />
+					<Label
+                        Text="01118324397"
+                        FontSize="22"
+                        FontAttributes="Bold"
+                        TextColor="#4A90E2"
+                        VerticalOptions="Center"
+                        FontFamily="Roboto" />
+				</StackLayout>
+
+				<!-- WhatsApp Row -->
+				<!-- WhatsApp Row -->
+				<StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="10">
+
+					<!-- ✅ صورة واتساب بدل الإيموجي -->
+					<Image
+						x:Name="WaIcon"
+						Source="whatsapp.png"
+						HeightRequest="28"
+						WidthRequest="28"
+						VerticalOptions="Center"
+						Scale="0"
+						Opacity="0"/>
+
+					<Label
+						Text="01004753611"
+						FontSize="22"
+						FontAttributes="Bold"
+						TextColor="#4A90E2"
+						VerticalOptions="Center"
+						FontFamily="Roboto" />
+				</StackLayout>
+
+			</StackLayout>
+
+			<!-- Spacer -->
+			<BoxView HeightRequest="24" Color="Transparent" />
+
+			<!-- Tagline -->
+			<Label
+                x:Name="TaglineLabel"
+                Text="EngineeCode للحلول البرمجية"
+                FontSize="16"
+                TextColor="#6699CC"
+                HorizontalOptions="Center"
+                HorizontalTextAlignment="Center"
+                Opacity="0"
+                TranslationY="30"
+                FontAttributes="Italic" />
+
+		</StackLayout>
+	</Grid>
+</ContentPage>

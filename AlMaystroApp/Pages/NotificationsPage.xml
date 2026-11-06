@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:AlMaystroApp.Controls"
+             x:Class="AlMaystroApp.Pages.NotificationsPage"
+             BackgroundColor="#111111">
+
+	<Shell.TitleView>
+		<Label Text="🔔  الإشعارات" FontSize="15" FontAttributes="Bold"
+               TextColor="#F5F0EB" FontFamily="Cairo" VerticalOptions="Center" Margin="10,0"/>
+	</Shell.TitleView>
+
+	<Grid>
+		<RefreshView x:Name="refreshView" Refreshing="OnRefreshing" RefreshColor="#CC2200">
+			<ScrollView>
+				<VerticalStackLayout Padding="14,14,14,100" Spacing="10">
+
+					<ActivityIndicator x:Name="loader" IsRunning="True" IsVisible="True"
+                                       Color="#CC2200" HeightRequest="40"/>
+
+					<CollectionView x:Name="notifList" SelectionMode="None">
+						<CollectionView.EmptyView>
+							<Label Text="لا توجد إشعارات 🔔" TextColor="#606060"
+                                   FontFamily="Cairo" HorizontalOptions="Center" Margin="0,40"/>
+						</CollectionView.EmptyView>
+						<CollectionView.ItemTemplate>
+							<DataTemplate>
+								<Frame BackgroundColor="{Binding BgColor}"
+                                       BorderColor="{Binding BorderColor}"
+                                       CornerRadius="12" Padding="14" Margin="0,0,0,8">
+									<Grid ColumnDefinitions="Auto,*">
+										<Label Grid.Column="0" Text="🔔" FontSize="20"
+                                               VerticalOptions="Center" Margin="0,0,10,0"/>
+										<VerticalStackLayout Grid.Column="1" Spacing="4">
+											<Label Text="{Binding Message}" FontSize="13"
+                                                   FontAttributes="Bold" TextColor="#F5F0EB"
+                                                   FontFamily="Cairo"/>
+											<Label Text="{Binding DateFmt}" FontSize="11"
+                                                   TextColor="#B0A8A0" FontFamily="Cairo"/>
+										</VerticalStackLayout>
+									</Grid>
+								</Frame>
+							</DataTemplate>
+						</CollectionView.ItemTemplate>
+					</CollectionView>
+
+				</VerticalStackLayout>
+			</ScrollView>
+		</RefreshView>
+
+		<controls:FloatingTabBar VerticalOptions="End" ActiveTab="Notif"/>
+	</Grid>
+</ContentPage>

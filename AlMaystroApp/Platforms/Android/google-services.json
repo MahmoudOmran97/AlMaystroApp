@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "455929289755",
+    "project_id": "almaystroapp",
+    "storage_bucket": "almaystroapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455929289755:android:ee720f0cea05f76b042cbe",
+        "android_client_info": {
+          "package_name": "com.companyname.almaystroapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1JwGA_kLjs5yWb6VzBaAbKQK1TwE6nRI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

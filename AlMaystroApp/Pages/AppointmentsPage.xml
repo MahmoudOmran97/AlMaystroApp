@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:AlMaystroApp.Controls"
+             x:Class="AlMaystroApp.Pages.AppointmentsPage"
+             BackgroundColor="#111111">
+
+	<Shell.TitleView>
+		<Label Text="🧾  فواتير" FontSize="15" FontAttributes="Bold"
+               TextColor="#F5F0EB" FontFamily="Cairo" VerticalOptions="Center" Margin="10,0"/>
+	</Shell.TitleView>
+
+	<Grid>
+		<RefreshView x:Name="refreshView" Refreshing="OnRefreshing" RefreshColor="#CC2200">
+			<ScrollView>
+				<VerticalStackLayout Padding="14,14,14,100" Spacing="10">
+
+					<Frame BackgroundColor="#1A1A1A" BorderColor="#CC2200"
+                           CornerRadius="12" Padding="12">
+						<Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="8">
+							<VerticalStackLayout Grid.Column="0" Spacing="3">
+								<Label Text="من" FontSize="11" TextColor="#B0A8A0" FontFamily="Cairo"/>
+								<DatePicker x:Name="dpFrom" Format="dd/MM/yyyy"
+                                            TextColor="#F5F0EB" BackgroundColor="Transparent"
+                                            MinimumDate="01/01/2024"/>
+							</VerticalStackLayout>
+							<Label Grid.Column="1" Text="→" TextColor="#CC2200"
+                                   FontSize="18" VerticalOptions="Center"/>
+							<VerticalStackLayout Grid.Column="2" Spacing="3">
+								<Label Text="إلى" FontSize="11" TextColor="#B0A8A0" FontFamily="Cairo"/>
+								<DatePicker x:Name="dpTo" Format="dd/MM/yyyy"
+                                            TextColor="#F5F0EB" BackgroundColor="Transparent"/>
+							</VerticalStackLayout>
+						</Grid>
+					</Frame>
+
+					<Button Text="🔍 بحث" Clicked="OnSearchClicked"
+                            BackgroundColor="#CC2200" TextColor="#FFFFFF"
+                            FontAttributes="Bold" FontFamily="Cairo"
+                            CornerRadius="12" HeightRequest="44"/>
+
+					<Frame BackgroundColor="#1A1A1A" BorderColor="#333333"
+                           CornerRadius="10" Padding="12,8">
+						<Label x:Name="lblCount" Text="اختر نطاق تاريخ وابحث..."
+                               FontSize="13" TextColor="#F5F0EB" FontFamily="Cairo"/>
+					</Frame>
+
+					<ActivityIndicator x:Name="loader" IsRunning="False" IsVisible="False"
+                                       Color="#CC2200" HeightRequest="40"/>
+
+					<CollectionView x:Name="apptList" SelectionMode="None">
+						<CollectionView.EmptyView>
+							<Label Text="لا توجد فواتير في هذه الفترة 🧾"
+                                   TextColor="#606060" FontFamily="Cairo"
+                                   HorizontalOptions="Center" Margin="0,40"/>
+						</CollectionView.EmptyView>
+						<CollectionView.ItemTemplate>
+							<DataTemplate>
+								<Frame BackgroundColor="#1A1A1A" BorderColor="#333333"
+                                       CornerRadius="12" Padding="12" Margin="0,0,0,8">
+									<Frame.GestureRecognizers>
+										<TapGestureRecognizer Tapped="OnInvoiceTapped"/>
+									</Frame.GestureRecognizers>
+									<Grid ColumnDefinitions="Auto,*,Auto">
+										<Frame Grid.Column="0" BackgroundColor="#2A0800"
+                                               BorderColor="#CC2200" CornerRadius="10"
+                                               Padding="0" WidthRequest="44" HeightRequest="44">
+											<Label Text="{Binding Initial}" FontSize="18"
+                                                   FontAttributes="Bold" TextColor="#CC2200"
+                                                   HorizontalOptions="Center" VerticalOptions="Center"/>
+										</Frame>
+										<VerticalStackLayout Grid.Column="1" Margin="10,0"
+                                                             VerticalOptions="Center" Spacing="3">
+											<Label Text="{Binding CusName}" FontSize="14"
+                                                   FontAttributes="Bold" TextColor="#F5F0EB"
+                                                   FontFamily="Cairo"/>
+											<Label Text="{Binding BarberInfo}" FontSize="12"
+                                                   TextColor="#B0A8A0" FontFamily="Cairo"/>
+											<Label Text="{Binding AppStatus}" FontSize="11"
+                                                   FontAttributes="Bold"
+                                                   TextColor="{Binding StatusColor}"
+                                                   FontFamily="Cairo"/>
+										</VerticalStackLayout>
+										<VerticalStackLayout Grid.Column="2" VerticalOptions="Center"
+                                                             HorizontalOptions="End" Spacing="3">
+											<Label Text="{Binding PayFmt}" FontSize="15"
+                                                   FontAttributes="Bold" TextColor="#CC2200"
+                                                   FontFamily="Cairo" HorizontalOptions="End"/>
+											<Label Text="{Binding DateFmt}" FontSize="11"
+                                                   TextColor="#606060" FontFamily="Cairo"
+                                                   HorizontalOptions="End"/>
+										</VerticalStackLayout>
+									</Grid>
+								</Frame>
+							</DataTemplate>
+						</CollectionView.ItemTemplate>
+					</CollectionView>
+
+				</VerticalStackLayout>
+			</ScrollView>
+		</RefreshView>
+
+		<controls:FloatingTabBar VerticalOptions="End" ActiveTab="Invoices"/>
+	</Grid>
+</ContentPage>

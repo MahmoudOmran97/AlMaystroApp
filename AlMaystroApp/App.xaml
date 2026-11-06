@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AlMaystroApp.App">
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <!-- ===== الخلفيات — أسود دافئ زي الموقع ===== -->
+            <Color x:Key="BgPrimary">#0D0B08</Color>
+            <Color x:Key="BgSecondary">#0D0B08</Color>
+            <Color x:Key="BgCard">#2A2520</Color>
+            <!-- كان #1A1610 -->
+            <Color x:Key="BgCard2">#332E28</Color>
+            <!-- كان #221E14 -->
+            <Color x:Key="BgCardAlt">#2E1A08</Color>
+            <Color x:Key="BgLight">#F5E6C8</Color>
+
+            <!-- ===== أحمر — اللون الأساسي ===== -->
+            <Color x:Key="Primary">#CC2200</Color>
+            <Color x:Key="PrimaryLight">#E03010</Color>
+            <Color x:Key="PrimaryDark">#991A00</Color>
+            <Color x:Key="PrimaryBg">#2A0800</Color>
+            <Color x:Key="PrimaryBorder">#550F00</Color>
+
+            <!-- ===== النصوص — كريمي/ذهبي ===== -->
+            <Color x:Key="TextPrimary">#F5E6C8</Color>
+            <Color x:Key="TextSecondary">#9A8A6A</Color>
+            <Color x:Key="TextDim">#5A5040</Color>
+            <Color x:Key="White">#FFFFFF</Color>
+
+            <!-- ===== الحدود ===== -->
+            <Color x:Key="BorderColor">#4A4035</Color>
+            <Color x:Key="BorderAccent">#CC2200</Color>
+            <Color x:Key="BorderLight">#C9A84C</Color>
+
+            <!-- ===== ذهبي — اللون الثاني للموقع ===== -->
+            <Color x:Key="AmberColor">#C9A84C</Color>
+            <Color x:Key="AmberBg">#1E1A08</Color>
+
+            <!-- ===== ألوان الحالة ===== -->
+            <Color x:Key="GreenColor">#3DAA6A</Color>
+            <Color x:Key="GreenBg">#0A2018</Color>
+            <Color x:Key="BlueColor">#4A9DC4</Color>
+            <Color x:Key="BlueBg">#08182A</Color>
+
+            <!-- ===== STYLES ===== -->
+
+            <Style TargetType="Shell">
+                <Setter Property="Shell.BackgroundColor"       Value="{StaticResource BgSecondary}" />
+                <Setter Property="Shell.ForegroundColor"       Value="{StaticResource Primary}" />
+                <Setter Property="Shell.TitleColor"            Value="{StaticResource TextPrimary}" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource BgSecondary}" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource TextDim}" />
+                <Setter Property="Shell.TabBarTitleColor"      Value="{StaticResource Primary}" />
+            </Style>
+
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="{StaticResource BgSecondary}" />
+                <Setter Property="BarTextColor"       Value="{StaticResource TextPrimary}" />
+            </Style>
+
+            <Style TargetType="Page" ApplyToDerivedTypes="True">
+                <Setter Property="BackgroundColor" Value="{StaticResource BgPrimary}" />
+            </Style>
+
+            <Style TargetType="Label">
+                <Setter Property="TextColor"  Value="{StaticResource TextPrimary}" />
+                <Setter Property="FontFamily" Value="Cairo" />
+            </Style>
+
+            <!-- زر أحمر أساسي -->
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="TextColor"       Value="{StaticResource White}" />
+                <Setter Property="FontFamily"      Value="Cairo" />
+                <Setter Property="FontAttributes"  Value="Bold" />
+                <Setter Property="CornerRadius"    Value="10" />
+                <Setter Property="BorderWidth"     Value="0" />
+                <Setter Property="Padding"         Value="16,10" />
+            </Style>
+
+            <!-- زر outline أحمر -->
+            <Style x:Key="OutlineButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextColor"       Value="{StaticResource Primary}" />
+                <Setter Property="FontFamily"      Value="Cairo" />
+                <Setter Property="CornerRadius"    Value="10" />
+                <Setter Property="BorderColor"     Value="{StaticResource Primary}" />
+                <Setter Property="BorderWidth"     Value="1.5" />
+                <Setter Property="Padding"         Value="16,10" />
+            </Style>
+
+            <!-- فريم داكن عادي -->
+            <Style TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{StaticResource BgCard}" />
+                <Setter Property="BorderColor"     Value="{StaticResource BorderColor}" />
+                <Setter Property="CornerRadius"    Value="12" />
+                <Setter Property="Padding"         Value="14" />
+                <Setter Property="HasShadow"       Value="False" />
+            </Style>
+
+            <!-- فريم أحمر -->
+            <Style x:Key="RedFrame" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryBg}" />
+                <Setter Property="BorderColor"     Value="{StaticResource PrimaryBorder}" />
+                <Setter Property="CornerRadius"    Value="12" />
+                <Setter Property="Padding"         Value="14" />
+                <Setter Property="HasShadow"       Value="False" />
+            </Style>
+
+            <!-- فريم ذهبي -->
+            <Style x:Key="GoldFrame" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{StaticResource AmberBg}" />
+                <Setter Property="BorderColor"     Value="{StaticResource AmberColor}" />
+                <Setter Property="CornerRadius"    Value="12" />
+                <Setter Property="Padding"         Value="14" />
+                <Setter Property="HasShadow"       Value="False" />
+            </Style>
+
+            <!-- فريم فاتح كريمي -->
+            <Style x:Key="LightFrame" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{StaticResource BgLight}" />
+                <Setter Property="BorderColor"     Value="{StaticResource AmberColor}" />
+                <Setter Property="CornerRadius"    Value="12" />
+                <Setter Property="Padding"         Value="14" />
+                <Setter Property="HasShadow"       Value="False" />
+            </Style>
+
+            <Style TargetType="Entry">
+                <Setter Property="TextColor"        Value="{StaticResource TextPrimary}" />
+                <Setter Property="PlaceholderColor" Value="{StaticResource TextDim}" />
+                <Setter Property="BackgroundColor"  Value="{StaticResource BgCard2}" />
+                <Setter Property="FontFamily"       Value="Cairo" />
+            </Style>
+
+            <Style TargetType="RefreshView">
+                <Setter Property="RefreshColor" Value="{StaticResource Primary}" />
+            </Style>
+
+            <Style TargetType="ActivityIndicator">
+                <Setter Property="Color" Value="{StaticResource Primary}" />
+            </Style>
+
+            <Style TargetType="DatePicker">
+                <Setter Property="TextColor"       Value="{StaticResource AmberColor}" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="FontFamily"      Value="Cairo" />
+            </Style>
+
+            <Style TargetType="ScrollView">
+                <Setter Property="BackgroundColor" Value="{StaticResource BgPrimary}" />
+            </Style>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
