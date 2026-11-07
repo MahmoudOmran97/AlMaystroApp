@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:m="clr-namespace:AlMaystroApp.Models"
+             xmlns:vm="clr-namespace:AlMaystroApp.ViewModels"
+             x:Class="AlMaystroApp.Views.CategoriesPage" Title="الأقسام" FlowDirection="RightToLeft">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="خروج" Command="{Binding LogoutCommand}" />
+        <ToolbarItem Text="+ قسم" Command="{Binding AddCommand}" />
+    </ContentPage.ToolbarItems>
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadCommand}">
+        <CollectionView ItemsSource="{Binding Items}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="m:CategoryItem">
+                    <Grid Padding="14,10" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriesViewModel}}, Path=OpenCommand}" CommandParameter="{Binding .}" />
+                        </Grid.GestureRecognizers>
+                        <VerticalStackLayout>
+                            <Label Text="{Binding Name}" FontSize="18" />
+                            <Label Text="{Binding CountText}" FontSize="12" TextColor="Gray" />
+                        </VerticalStackLayout>
+                        <Button Grid.Column="1" Text="تعديل" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriesViewModel}}, Path=EditCommand}" CommandParameter="{Binding .}" />
+                        <Button Grid.Column="2" Text="حذف" TextColor="White" BackgroundColor="Firebrick" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriesViewModel}}, Path=DeleteCommand}" CommandParameter="{Binding .}" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+</ContentPage>

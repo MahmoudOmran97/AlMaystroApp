@@ -1,31 +1,18 @@
-﻿<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 	<application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/appicon2"
         android:roundIcon="@mipmap/appicon2_round"
         android:supportsRtl="true">
 
-		<!-- التعديل هنا: تأكد من كتابة الـ Namespace بالظبط كما هو في ملف الـ C# -->
-		<service
-            android:name="AlMaystroApp.Platforms.Android.NotificationForegroundService"
-            android:foregroundServiceType="dataSync"
-            android:exported="false"/>
+		<!-- The two services are registered automatically from their [Service] attributes in C#.
+		     No manual <service> entries here (they pointed to class names that didn't exist). -->
 
-		<service
-             android:name="AlMaystroApp.Platforms.Android.MyFirebaseMessagingService"
-             android:exported="false">
-			<intent-filter>
-				<action android:name="com.google.firebase.MESSAGING_EVENT"/>
-			</intent-filter>
-		</service>
-
-		<!-- أيكون الإشعار -->
-		<!-- أيكون الإشعار الافتراضية -->
 		<meta-data
 			android:name="com.google.firebase.messaging.default_notification_icon"
 			android:resource="@mipmap/appicon2" />
 
-		<!-- معرف القناة الافتراضية - لاحظ استخدمنا android:value هنا لتجنب الخطأ -->
 		<meta-data
 			android:name="com.google.firebase.messaging.default_notification_channel_id"
 			android:value="maystro_channel" />

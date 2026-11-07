@@ -2,8 +2,6 @@
 using Android.Content;
 using Android.OS;
 using AlMaystroApp.Services;
-using Plugin.LocalNotification;
-using Plugin.LocalNotification.AndroidOption;
 
 namespace AlMaystroApp.Platforms.Android;
 
@@ -11,20 +9,24 @@ namespace AlMaystroApp.Platforms.Android;
 public class NotificationForegroundService : Service
 {
     private CancellationTokenSource? _cts;
+    private readonly HashSet<int> _shown = new();            // don't re-notify the same notification every poll
     private const int ServiceNotifId = 1001;
-    private const string ChannelId = "maystro_bg_channel";
+    private const string BgChannelId = "maystro_bg_channel";      // persistent "running" notification
+    private const string AlertChannelId = "maystro_channel";      // real alerts (same id as manifest + MainActivity)
 
     public override IBinder? OnBind(Intent? intent) => null;
 
     public override StartCommandResult OnStartCommand(Intent? intent, StartCommandFlags flags, int startId)
     {
-        CreateChannel();
+        CreateChannels();
         StartForeground(ServiceNotifId, BuildPersistentNotif());
 
+        _cts?.Cancel();
         _cts = new CancellationTokenSource();
-        Task.Run(() => PollLoop(_cts.Token));
+        var token = _cts.Token;
+        Task.Run(() => PollLoop(token));
 
-        return StartCommandResult.Sticky; // ← يرجع تلقائي لو اتقتل
+        return StartCommandResult.Sticky;
     }
 
     public override void OnDestroy()
@@ -36,53 +38,48 @@ public class NotificationForegroundService : Service
     // ── Polling ──────────────────────────────────────
     private async Task PollLoop(CancellationToken token)
     {
-        // انتظر أول مرة عشان التطبيق يتحمل
-        await Task.Delay(5000, token);
-
-        while (!token.IsCancellationRequested)
+        try
         {
-            try { await CheckUnread(); }
-            catch (Exception ex)
+            await Task.Delay(5000, token);      // let the app finish starting
+            while (!token.IsCancellationRequested)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ BG Poll: {ex.Message}");
+                try { await CheckUnread(); }
+                catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"❌ BG Poll: {ex.Message}"); }
+                await Task.Delay(TimeSpan.FromSeconds(30), token);
             }
-            await Task.Delay(TimeSpan.FromSeconds(30), token);
         }
+        catch (TaskCanceledException) { /* service stopped */ }
     }
 
     private async Task CheckUnread()
     {
-        // جيب الـ ApiService من الـ DI
-        var api = IPlatformApplication.Current?.Services
-                      .GetService<ApiService>();
-        if (api == null) return;
+        var api = IPlatformApplication.Current?.Services.GetService<ApiService>();
+        if (api == null)
+        {
+            System.Diagnostics.Debug.WriteLine("❌ ApiService is not registered in MauiProgram");
+            return;
+        }
 
         var unread = await api.GetUnreadNotificationsAsync();
         System.Diagnostics.Debug.WriteLine($"📬 BG Unread: {unread.Count}");
 
-        if (!unread.Any()) return;
-
         foreach (var notif in unread)
         {
+            if (!_shown.Add(notif.Id)) continue;
             ShowLocalNotif(notif.Id, notif.Notfication1 ?? "إشعار جديد");
         }
     }
 
-    // ── إشعار محلي ──────────────────────────────────
+    // ── Real alert ───────────────────────────────────
     private void ShowLocalNotif(int id, string message)
     {
         var manager = (NotificationManager?)GetSystemService(NotificationService);
         if (manager == null) return;
 
-        // Channel للإشعارات الحقيقية
-        var channel = new NotificationChannel("maystro_channel", "إشعارات المايسترو",
-            NotificationImportance.High);
-        manager.CreateNotificationChannel(channel);
-
-        var notif = new global::Android.App.Notification.Builder(this, "maystro_channel")
+        var notif = new global::Android.App.Notification.Builder(this, AlertChannelId)
             .SetContentTitle("✂️ المايسترو")
             .SetContentText(message)
-            .SetSmallIcon(this.Resources.GetIdentifier("abc_btn_check_material", "drawable", this.PackageName))// غيّر للأيكون بتاعك
+            .SetSmallIcon(GetSmallIcon())
             .SetAutoCancel(true)
             .SetPriority((int)NotificationPriority.High)
             .Build();
@@ -90,7 +87,7 @@ public class NotificationForegroundService : Service
         manager.Notify(id, notif);
     }
 
-    // ── الإشعار الدائم (عشان الـ Foreground Service) ──
+    // ── Persistent notification required for a foreground service ──
     private global::Android.App.Notification BuildPersistentNotif()
     {
         var intent = new Intent(this, typeof(MainActivity));
@@ -99,24 +96,30 @@ public class NotificationForegroundService : Service
         var pendingIntent = PendingIntent.GetActivity(this, 0, intent,
             PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Immutable);
 
-        // ملاحظة: تأكد أن ChannelId هنا يطابق المعرف في CreateChannel() وهو "maystro_bg_channel"
-        var channelId = "maystro_bg_channel";
-
-        return new global::Android.App.Notification.Builder(this, channelId)
+        return new global::Android.App.Notification.Builder(this, BgChannelId)
             .SetContentTitle("المايسترو")
             .SetContentText("التطبيق يعمل في الخلفية لمراقبة الطلبات")
-            // استخدام أيقونة معلومات النظام العامة (متوفرة دائماً)
-            .SetSmallIcon(global::Android.Resource.Drawable.IcDialogInfo)
+            .SetSmallIcon(GetSmallIcon())
             .SetContentIntent(pendingIntent)
-            .SetAutoCancel(false) // الخدمة الدائمة يفضل أن تكون false
+            .SetAutoCancel(false)
             .SetOngoing(true)
             .Build();
     }
-    private void CreateChannel()
+
+    private int GetSmallIcon()
+    {
+        int id = Resources?.GetIdentifier("appicon2", "mipmap", PackageName) ?? 0;
+        return id != 0 ? id : global::Android.Resource.Drawable.IcDialogInfo;   // never 0, or Build() throws
+    }
+
+    private void CreateChannels()
     {
         var manager = (NotificationManager?)GetSystemService(NotificationService);
-        var channel = new NotificationChannel(ChannelId, "المايسترو خلفية",
-            NotificationImportance.Low); // Low عشان متزعجش المستخدم
-        manager?.CreateNotificationChannel(channel);
+        if (manager == null) return;
+
+        manager.CreateNotificationChannel(new NotificationChannel(
+            BgChannelId, "المايسترو خلفية", NotificationImportance.Low));
+        manager.CreateNotificationChannel(new NotificationChannel(
+            AlertChannelId, "إشعارات المايسترو", NotificationImportance.High));
     }
 }

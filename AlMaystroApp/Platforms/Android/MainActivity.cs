@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Firebase; // تأكد من إضافة هذا الـ namespace
+using Firebase;
 
 namespace AlMaystroApp
 {
@@ -12,38 +12,37 @@ namespace AlMaystroApp
         {
             base.OnCreate(savedInstanceState);
 
-            // 1. تهيئة Firebase يدوياً لضمان عدم حدوث Crash
-            try
-            {
-                FirebaseApp.InitializeApp(this);
-            }
+            try { FirebaseApp.InitializeApp(this); }
             catch (System.Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"❌ Firebase Init Error: {ex.Message}");
             }
 
-            // 2. إنشاء قناة الإشعارات (Notification Channel) 
-            // ضروري جداً لأندرويد 8.0 فما فوق لتظهر الإشعارات
             CreateNotificationChannel();
+            RequestNotificationPermission();
+        }
+
+        // Android 13+ needs the permission at runtime, otherwise no notification is ever shown
+        private void RequestNotificationPermission()
+        {
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.Tiramisu &&
+                CheckSelfPermission(global::Android.Manifest.Permission.PostNotifications) != Permission.Granted)
+            {
+                RequestPermissions(new[] { global::Android.Manifest.Permission.PostNotifications }, 1001);
+            }
         }
 
         private void CreateNotificationChannel()
         {
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            if (Build.VERSION.SdkInt < BuildVersionCodes.O) return;
+
+            // same id as AndroidManifest meta-data + the services: "maystro_channel"
+            var channel = new NotificationChannel("maystro_channel", "إشعارات المايسترو", NotificationImportance.High)
             {
-                var channelId = "maystro_notifications"; // يجب أن يطابق المعرف في الخدمة
-                var channelName = "إشعارات المايسترو";
-                var channelDescription = "قناة مخصصة لإشعارات تطبيق المايسترو";
-                var importance = NotificationImportance.High;
-
-                var channel = new NotificationChannel(channelId, channelName, importance)
-                {
-                    Description = channelDescription
-                };
-
-                var notificationManager = (NotificationManager)GetSystemService(NotificationService);
-                notificationManager.CreateNotificationChannel(channel);
-            }
+                Description = "قناة مخصصة لإشعارات تطبيق المايسترو"
+            };
+            var manager = (NotificationManager?)GetSystemService(NotificationService);
+            manager?.CreateNotificationChannel(channel);
         }
     }
 }

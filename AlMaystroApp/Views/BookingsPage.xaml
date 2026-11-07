@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:m="clr-namespace:AlMaystroApp.Models"
+             xmlns:vm="clr-namespace:AlMaystroApp.ViewModels"
+             x:Class="AlMaystroApp.Views.BookingsPage" Title="الحجوزات" FlowDirection="RightToLeft">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="فلترة" Command="{Binding FilterCommand}" />
+    </ContentPage.ToolbarItems>
+    <Grid RowDefinitions="Auto,*">
+        <HorizontalStackLayout Padding="12" Spacing="12">
+            <DatePicker Date="{Binding Day}" IsEnabled="{Binding AllDays, Converter={StaticResource InvertedBool}}" />
+            <Label Text="كل الجاي" VerticalOptions="Center" />
+            <Switch IsToggled="{Binding AllDays}" />
+        </HorizontalStackLayout>
+        <RefreshView Grid.Row="1" IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadCommand}">
+            <CollectionView ItemsSource="{Binding Items}">
+                <CollectionView.EmptyView><Label Text="مفيش حجوزات" HorizontalOptions="Center" Margin="0,40" TextColor="Gray" /></CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="m:BookingItem">
+                        <Border Margin="12,6" Padding="12" StrokeShape="RoundRectangle 10">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookingsViewModel}}, Path=ActionsCommand}" CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto">
+                                <Label Text="{Binding CustomerName}" FontSize="17" />
+                                <Label Grid.Column="1" Text="{Binding StatusAr}" FontAttributes="Bold" />
+                                <Label Grid.Row="1" Text="{Binding ServiceName}" TextColor="Gray" />
+                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding SourceAr}" FontSize="12" TextColor="Gray" />
+                                <Label Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding When}" FontSize="13" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

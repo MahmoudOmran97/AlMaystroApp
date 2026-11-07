@@ -75,6 +75,7 @@
 		<None Remove="Resources\Splash\splash.png" />
 		<None Remove="Resources\Splash\whatsapp.png" />
 		<None Remove="SplashPage.xml" />
+		<None Remove="Views\SplashPage.xml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -96,12 +97,14 @@
 		<MauiXaml Include="Pages\NotificationsPage.xml">
 		  <CopyToOutputDirectory></CopyToOutputDirectory>
 		</MauiXaml>
-		<MauiXaml Include="SplashPage.xml">
-		  <CopyToOutputDirectory></CopyToOutputDirectory>
-		</MauiXaml>
+		<MauiXaml Include="Views\SplashPage.xml" />
 	</ItemGroup>
 
 	<ItemGroup>
+		
+		<PackageReference Include="CommunityToolkit.Maui" Version="9.0.0" />
+		
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		
 		<PackageReference Include="Plugin.LocalNotification" Version="11.1.2" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
@@ -116,6 +119,21 @@
 	  <PackageReference Include="Xamarin.GooglePlayServices.Base">
 	    <Version>118.4.0</Version>
 	  </PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Views\BookingsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\CategoriesPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\LoginPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ServicesPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>
