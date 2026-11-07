@@ -4,11 +4,13 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace AlMaystroApp.ViewModels;
 
+[QueryProperty(nameof(Next), "next")]
 public partial class LoginViewModel(ApiClient api) : ObservableObject
 {
     [ObservableProperty] string username = "";
     [ObservableProperty] string password = "";
     [ObservableProperty] string error = "";
+    [ObservableProperty] string next = "categories";   // "back" = ارجع للصفحة اللي فتحت منها
     [ObservableProperty, NotifyPropertyChangedFor(nameof(NotBusy))] bool isBusy;
     public bool NotBusy => !IsBusy;
 
@@ -19,7 +21,7 @@ public partial class LoginViewModel(ApiClient api) : ObservableObject
         IsBusy = true; Error = "";
         try
         {
-            if (await api.LoginAsync(Username.Trim(), Password)) await Shell.Current.GoToAsync("//main/categories");
+            if (await api.LoginAsync(Username.Trim(), Password)) await Shell.Current.GoToAsync(Next == "back" ? ".." : "../categories");
             else Error = "بيانات الدخول غير صحيحة";
         }
         catch { Error = "تعذر الاتصال بالسيرفر"; }

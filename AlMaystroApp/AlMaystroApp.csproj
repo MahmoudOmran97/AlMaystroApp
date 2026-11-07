@@ -65,17 +65,11 @@
 
 	<ItemGroup>
 		<None Remove="Controls\FloatingTabBar.xml" />
-		<None Remove="Pages\AppointmentsPage.xml" />
-		<None Remove="Pages\AttendancePage.xml" />
-		<None Remove="Pages\BookingsPage.xml" />
-		<None Remove="Pages\DashboardPage.xml" />
-		<None Remove="Pages\NotificationsPage.xml" />
 		<None Remove="Resources\AppIcon\appicon2.png" />
 		<None Remove="Resources\AppIcon\app_logo.svg" />
 		<None Remove="Resources\Splash\splash.png" />
 		<None Remove="Resources\Splash\whatsapp.png" />
 		<None Remove="SplashPage.xml" />
-		<None Remove="Views\SplashPage.xml" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,5 +1,6 @@
 ﻿using AlMaystroApp.Models;
 using AlMaystroApp.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Plugin.LocalNotification;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -21,6 +22,21 @@ public partial class DashboardPage : ContentPage
         base.OnAppearing();
         await LocalNotificationCenter.Current.RequestNotificationPermission();
         await LoadData();
+    }
+
+    // زرار ⚙ : فتح شاشات الإدارة (تسجيل دخول لو مفيش توكن محفوظ)
+    private async void OnManageTapped(object sender, EventArgs e)
+    {
+        try
+        {
+            var owner = IPlatformApplication.Current!.Services.GetRequiredService<ApiClient>();
+            await owner.InitAsync();
+            await Shell.Current.GoToAsync(owner.IsLoggedIn ? "categories" : "login?next=categories");
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Manage nav error: {ex.Message}");
+        }
     }
 
     private async void OnRefreshClicked(object sender, EventArgs e) => await LoadData();

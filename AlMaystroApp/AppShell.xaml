@@ -1,14 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Shell x:Class="AlMaystroApp.AppShell"
-       xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       xmlns:v="clr-namespace:AlMaystroApp.Views"
-       FlowDirection="RightToLeft" Shell.FlyoutBehavior="Disabled">
-
-    <ShellContent Route="login" ContentTemplate="{DataTemplate v:LoginPage}" Shell.NavBarIsVisible="False" />
-
-    <TabBar Route="main">
-        <ShellContent Route="categories" Title="الأقسام"   ContentTemplate="{DataTemplate v:CategoriesPage}" />
-        <ShellContent Route="bookings"   Title="الحجوزات" ContentTemplate="{DataTemplate v:BookingsPage}" />
+       xmlns:pages="clr-namespace:AlMaystroApp.Pages"
+       x:Class="AlMaystroApp.AppShell"
+       Shell.BackgroundColor="#1A1A1A"
+       Shell.ForegroundColor="#CC2200"
+       Shell.TabBarBackgroundColor="#1A1A1A"
+       Shell.TabBarForegroundColor="#CC2200"
+       Shell.TabBarUnselectedColor="#606060"
+     Shell.TabBarIsVisible="False" >
+    <TabBar>
+        <Tab Title="الرئيسية">
+            <!-- index 0 -->
+            <ShellContent Route="dashboard" ContentTemplate="{DataTemplate pages:DashboardPage}"/>
+        </Tab>
+        <Tab Title="الفواتير">
+            <!-- index 1 -->
+            <ShellContent Route="appointments" ContentTemplate="{DataTemplate pages:AppointmentsPage}"/>
+        </Tab>
+        <Tab Title="الحضور">
+            <!-- index 2 -->
+            <ShellContent Route="attendance" ContentTemplate="{DataTemplate pages:AttendancePage}"/>
+        </Tab>
+        <Tab Title="الحجوزات">
+            <!-- index 3 -->
+            <ShellContent Route="bookings" ContentTemplate="{DataTemplate pages:BookingsPage}"/>
+        </Tab>
+        <Tab Title="إشعارات">
+            <!-- index 4 -->
+            <ShellContent Route="notifications" ContentTemplate="{DataTemplate pages:NotificationsPage}"/>
+        </Tab>
     </TabBar>
 </Shell>

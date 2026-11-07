@@ -6,7 +6,7 @@
              BackgroundColor="#111111">
 
 	<Shell.TitleView>
-		<Label Text="📅 الحجوزات من الموقع" FontSize="15" FontAttributes="Bold"
+		<Label Text="📅 الحجوزات" FontSize="15" FontAttributes="Bold"
                TextColor="#F5F0EB" FontFamily="Cairo" VerticalOptions="Center" Margin="10,0"/>
 	</Shell.TitleView>
 
@@ -41,8 +41,12 @@
 
 					<Frame BackgroundColor="#1A1A1A" BorderColor="#333333"
                            CornerRadius="10" Padding="12,8">
-						<Label x:Name="lblCount" Text="اختر نطاق تاريخ وابحث..."
-                               FontSize="13" TextColor="#F5F0EB" FontFamily="Cairo"/>
+						<VerticalStackLayout Spacing="2">
+							<Label x:Name="lblCount" Text="اختر نطاق تاريخ وابحث..."
+                                   FontSize="13" TextColor="#F5F0EB" FontFamily="Cairo"/>
+							<Label Text="اضغط على أي حجز عشان تأكده أو تلغيه"
+                                   FontSize="11" TextColor="#9A8A6A" FontFamily="Cairo"/>
+						</VerticalStackLayout>
 					</Frame>
 
 					<ActivityIndicator x:Name="loader" IsRunning="False" IsVisible="False"
@@ -58,6 +62,9 @@
 							<DataTemplate>
 								<Frame BackgroundColor="#1A1A1A" BorderColor="#333333"
                                        CornerRadius="12" Padding="12" Margin="0,0,0,8">
+									<Frame.GestureRecognizers>
+										<TapGestureRecognizer Tapped="OnBookingTapped"/>
+									</Frame.GestureRecognizers>
 									<Grid ColumnDefinitions="Auto,*,Auto">
 										<Frame Grid.Column="0" BackgroundColor="#2A0800"
                                                BorderColor="#CC2200" CornerRadius="10"
@@ -73,11 +80,20 @@
                                                    FontFamily="Cairo"/>
 											<Label Text="{Binding Phone}" FontSize="12"
                                                    TextColor="#B0A8A0" FontFamily="Cairo"/>
+											<Label Text="{Binding ServiceName}" FontSize="11"
+                                                   TextColor="#C9A84C" FontFamily="Cairo"
+                                                   IsVisible="{Binding HasService}"/>
 										</VerticalStackLayout>
-										<Label Grid.Column="2" Text="{Binding BookDate}"
-                                               FontSize="12" TextColor="#606060"
-                                               FontFamily="Cairo" VerticalOptions="Center"
-                                               HorizontalOptions="End"/>
+										<VerticalStackLayout Grid.Column="2" VerticalOptions="Center"
+                                                             HorizontalOptions="End" Spacing="3">
+											<Label Text="{Binding StatusText}" FontSize="12"
+                                                   FontAttributes="Bold" FontFamily="Cairo"
+                                                   TextColor="{Binding StatusColor}"
+                                                   HorizontalOptions="End"/>
+											<Label Text="{Binding BookDate}" FontSize="11"
+                                                   TextColor="#9A8A6A" FontFamily="Cairo"
+                                                   HorizontalOptions="End"/>
+										</VerticalStackLayout>
 									</Grid>
 								</Frame>
 							</DataTemplate>

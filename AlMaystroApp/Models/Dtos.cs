@@ -42,6 +42,10 @@ public class BookingDto
     public string? CusName { get; set; }
     public string? CusPhone { get; set; }
     public string? BookingDate { get; set; }
+    public string? Status { get; set; }       // Pending / Confirmed / Cancelled / Completed / NoShow
+    public string? Source { get; set; }       // Web / Desktop / Mobile
+    public string? ServiceName { get; set; }
+    public string? Notes { get; set; }
 }
 
 public class NotificationDto

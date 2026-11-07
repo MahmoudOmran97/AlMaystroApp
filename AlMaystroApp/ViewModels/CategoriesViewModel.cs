@@ -52,7 +52,11 @@ public partial class CategoriesViewModel(ApiClient api) : ObservableObject
         Shell.Current.GoToAsync($"services?categoryId={c.Id}");
 
     [RelayCommand]
-    void Logout() { api.Logout(); Shell.Current.GoToAsync("//login"); }
+    async Task Logout()
+    {
+        api.Logout();
+        try { await Shell.Current.GoToAsync(".."); } catch { }
+    }
 
     async Task Run(Func<Task> action)
     {
