@@ -8,6 +8,7 @@ namespace AlMaystroApp.Pages;
 public class BookingRow
 {
     public int Id { get; set; }
+    public string Status { get; set; } = "Pending";   // الحالة الأصلية من السيرفر
     public string Initial { get; set; } = "?";
     public string CusName { get; set; } = "";
     public string Phone { get; set; } = "";
@@ -54,7 +55,7 @@ public partial class BookingsPage : ContentPage
 
     private static (string Text, Color Color) StatusInfo(string? status) => status switch
     {
-        "Confirmed" => ("مؤكد", Color.FromArgb("#3DAA6A")),
+        "Confirmed" => ("بيتخدم", Color.FromArgb("#3DAA6A")),
         "Cancelled" => ("ملغي", Color.FromArgb("#CC2200")),
         "Completed" => ("تم", Color.FromArgb("#4A9DC4")),
         "NoShow"    => ("لم يحضر", Color.FromArgb("#9A8A6A")),
@@ -86,6 +87,7 @@ public partial class BookingsPage : ContentPage
                 Phone = b.CusPhone ?? "–",
                 BookDate = b.BookingDate ?? "",
                 ServiceName = b.ServiceName ?? "",
+                Status = b.Status ?? "Pending",
                 StatusText = text,
                 StatusColor = color
             };
@@ -95,13 +97,30 @@ public partial class BookingsPage : ContentPage
         loader.IsRunning = false;
     }
 
-    // اضغط على أي حجز -> تأكيد / إلغاء / تم / لم يحضر / اتصال
+    // اضغط على حجز -> إلغاء / رجوع للانتظار / اتصال
+    // "بيتخدم" و"تم" بيتحددوا من الكاشير (لما تتعمل فاتورة) ومينفعش يتغيروا من الموبايل.
     private async void OnBookingTapped(object? sender, TappedEventArgs e)
     {
         if ((sender as BindableObject)?.BindingContext is not BookingRow row) return;
 
-        var pick = await DisplayActionSheet($"{row.CusName} - {row.Phone}", "إغلاق", null,
-            "تأكيد", "إلغاء الحجز", "تم", "لم يحضر", "اتصال");
+        string title = $"{row.CusName} - {row.Phone}";
+        string? pick;
+
+        if (row.Status is "Confirmed" or "Completed")
+        {
+            title += row.Status == "Completed"
+                ? "\nتم (اتعملّه فاتورة) - مينفعش تتغير"
+                : "\nبيتخدم دلوقتي على الكاشير - مينفعش تتغير";
+            pick = await DisplayActionSheet(title, "إغلاق", null, "اتصال");
+        }
+        else if (row.Status == "Pending")
+        {
+            pick = await DisplayActionSheet(title, "إغلاق", null, "إلغاء الحجز", "اتصال");
+        }
+        else // Cancelled / NoShow
+        {
+            pick = await DisplayActionSheet(title, "إغلاق", null, "رجوع للانتظار", "اتصال");
+        }
 
         if (pick == "اتصال")
         {
@@ -111,10 +130,8 @@ public partial class BookingsPage : ContentPage
 
         string? status = pick switch
         {
-            "تأكيد" => "Confirmed",
             "إلغاء الحجز" => "Cancelled",
-            "تم" => "Completed",
-            "لم يحضر" => "NoShow",
+            "رجوع للانتظار" => "Pending",
             _ => null
         };
         if (status is null) return;
@@ -131,6 +148,12 @@ public partial class BookingsPage : ContentPage
             }
 
             await owner.SetBookingStatusAsync(row.Id, status);
+            await LoadData(dpFrom.Date, dpTo.Date);
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Conflict)
+        {
+            // الكاشير اشتغل على الحجز ده قبل ما الموبايل يتحدّث
+            await DisplayAlert("مينفعش", "الحجز ده اتخدم أو اتعمله فاتورة من الكاشير ومينفعش تتغير حالته.", "حسناً");
             await LoadData(dpFrom.Date, dpTo.Date);
         }
         catch

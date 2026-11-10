@@ -44,7 +44,7 @@
 						<VerticalStackLayout Spacing="2">
 							<Label x:Name="lblCount" Text="اختر نطاق تاريخ وابحث..."
                                    FontSize="13" TextColor="#F5F0EB" FontFamily="Cairo"/>
-							<Label Text="اضغط على أي حجز عشان تأكده أو تلغيه"
+							<Label Text="اضغط على الحجز عشان تلغيه أو ترجعه للانتظار (حالة تم بتتحدد من الكاشير)"
                                    FontSize="11" TextColor="#9A8A6A" FontFamily="Cairo"/>
 						</VerticalStackLayout>
 					</Frame>
